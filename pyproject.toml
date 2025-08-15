@@ -1,0 +1,83 @@
+[project]
+name = "retail-demand-lab"
+version = "0.1.0"
+description = "Retail Demand & Promotions Lab (FastAPI + DS pipeline)"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Prateek Bangwal" }]
+
+# --- Build system (only if you later package this; harmless to keep now)
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+# -----------------------
+# Formatting: Black
+# -----------------------
+[tool.black]
+line-length = 100
+target-version = ["py310","py311","py312"]
+exclude = '''
+/(
+  \.venv
+  | data
+  | models
+  | \.git
+  | \.mypy_cache
+  | \.pytest_cache
+)/
+'''
+
+# -----------------------
+# Imports: isort
+# -----------------------
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["app"]
+skip = ["data", "models", ".venv"]
+
+# -----------------------
+# Lint: Ruff
+# -----------------------
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["data", "models", ".venv"]
+# Select a solid, friendly rule set; you can tighten later
+select = [
+  "E",  # pycodestyle errors
+  "F",  # pyflakes
+  "I",  # import sorting
+  "B",  # flake8-bugbear
+  "UP", # pyupgrade
+]
+ignore = [
+  "E203", # handled by black
+  "E501", # line length handled by black
+]
+
+# -----------------------
+# Typing: MyPy
+# -----------------------
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+disallow_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+show_error_codes = true
+pretty = true
+exclude = "(^data/|^models/|^\\.venv/)"
+
+# -----------------------
+# Pytest config
+# -----------------------
+[tool.pytest.ini_options]
+pythonpath = ["."]
+addopts = "-q"
+testpaths = ["tests", "app/tests"]
+filterwarnings = [
+  "ignore::DeprecationWarning",
+]
